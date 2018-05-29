@@ -1,0 +1,109 @@
+//Si F2 (postprint) n'est pas "can" renvoyer la valeur (ex. restricted ou unknown)
+=SI(
+	ESTERREUR(
+		RECHERCHEV("can";F2;1;FAUX)
+	);
+	F2;
+	
+	// Sinon, si c'est écrit qu'on peut déposer le postprint (sans mention de durée d'embargo)
+	SI(
+		OU(
+			ESTNUM(CHERCHE("Author's post-print on funder's repositories, institutional repository or subject-based repositories";X2));
+			ESTNUM(CHERCHE("On Institutional Repositories, central repositories and open access websites";X2));
+			ESTNUM(CHERCHE("Author's post-print on free e-print servers or arXiv, author's personal website, institutional website, funding-agency repository, institutional repository";X2));
+			ESTNUM(CHERCHE("On author's personal website or institutional repository";X2));
+			ESTNUM(CHERCHE("On author's personal website, institutional repository, non-commercial subject repository and governmental website";X2));
+			ESTNUM(CHERCHE("Pre-print and Post-print on any website or open access repository";X2));
+			ESTNUM(CHERCHE("On non-commercial author's personal website or open access repositories";X2));
+			ESTNUM(CHERCHE("Author's post-print on author's personal website, departmental website or institutional repository immediately";X2));
+			ESTNUM(CHERCHE("Author's post-print on author's personal website, departmental website, institutional website or institutional repository";X2));
+			ESTNUM(CHERCHE("On author's personal website or institutional website or OAI compliant website";X2));
+			ESTNUM(CHERCHE("Author's post-print on author's personal website, departmental website, institutional repository, non-commercial subject-based repositories, such as PubMed Central, Europe PMC or arXiv, on acceptance of publication";X2));
+			ESTNUM(CHERCHE("On author's personal website and open access repositories";X2));
+			ESTNUM(CHERCHE("On author's personal website, institutional repositories, arXiv, AgEcon, PhilPapers, PubMed Central, RePEc or Social Science Research Network";X2));
+			ESTNUM(CHERCHE("On author's personal website, pre-print server, institutional website, institutional repository or subject-based open access repository";X2));
+			ESTNUM(CHERCHE("On author's personal website, pre-print servers, institutional website, institutional repositories or subject repositories";X2));
+			ESTNUM(CHERCHE("Author's accepted version may be deposited immediately upon acceptance";X2));
+			ESTNUM(CHERCHE("On author's personal website, author's institutional repository or departmental website";X2));
+			ESTNUM(CHERCHE("On author's personal website, employer's website, institutional repository, non-commercial subject repository";X2));
+			ESTNUM(CHERCHE("On author's personal website, employer's website or institutional repository";X2));
+			ESTNUM(CHERCHE("On author's personal website, employer's website or institutional repository only";X2));
+			ESTNUM(CHERCHE("Author's post-print on author's personal website or employer's website or IEEE approved not-for-profit third party (8.1.9.G.2 ) website";X2));
+			ESTNUM(CHERCHE("Author's post-print on authors personal website or institutional repository";X2));
+			ESTNUM(CHERCHE("Author's post-print only on open access repository, institutional repository or Research Gate";X2));
+			ESTNUM(CHERCHE("Authors' post-print and Publisher's version/PDF on author's personal website, employer's website or institutional repository";X2));
+			ESTNUM(CHERCHE("Post-print in institutional repository or centrally organised repositories";X2));
+			ESTNUM(CHERCHE("On author's personal website or an institutional repository, or their funding body's designated repository";X2));
+			ESTNUM(CHERCHE("Author's Post-print on author's personal website, institutional repository, open access repository, employer's website or funder's mandated repository only";X2));
+			ESTNUM(CHERCHE("On authors' personal website or institutional server only";X2));
+			ESTNUM(CHERCHE("Post-print on authors' personal website, institutional website, PubMed Central";X2));
+			ESTNUM(CHERCHE("Author's post-print on author's personal website, institutional repository, open access repository, scholarly communications networks that comply with International Association of STM Publishers sharing principles";X2));
+			ESTNUM(CHERCHE("Author's post-print on pre-print servers, including arXiv";X2));
+			ESTNUM(CHERCHE("Publisher's version/PDF on authors personal website,institutional website or open access repository";X2));
+			ESTNUM(CHERCHE("On author's personal website, employer's website or institutional repository";X2));
+			ESTNUM(CHERCHE("Author's post-print on author's personal website, institutional repository, subject repository or funding agency designated repository";X2));
+			ESTNUM(CHERCHE("On author's personal website, institutional website or e-print servers, including in arXiv";X2));
+			ESTNUM(CHERCHE("Author's post-print on funder's repository or funder's designated repository at the funding agency's request or as a result of legal obligation";X2));
+			ESTNUM(CHERCHE("On author's personal website, employer's website, employer's repository, or subject-based repository";X2));
+			ESTNUM(CHERCHE("On institutional repository";X2))
+		);
+		"dépôt postprint ok";
+		
+		// Sinon, s'il y a une durée d'embargo d'écrite dans les conditions on veut savoir laquelle. Pour Elsevier entre 12 et 48 mois
+		SI(
+			ET(
+				ESTNUM(CHERCHE("Author's post-print on open access repository after an embargo period of between <num>12</num>";X2));
+				ESTNUM(CHERCHE("and <num>48</num>";X2))
+			);
+			"12 à 48 mois";	
+			
+			// Sinon, pour les autres éditeurs, quand la durée d'embargo est écrite après la balise <num>
+			SI(
+				OU(
+					ESTNUM(CHERCHE("On an institutional repository or open access repository after <num>";X2));
+					ESTNUM(CHERCHE("Author's post-print may be used on institutional repository after <num>";X2));
+					ESTNUM(CHERCHE("Author's post-print on open access repository after an embargo period of between <num>";X2));
+					ESTNUM(CHERCHE("On institutional repository, subject-based repository or academic social network (Mendeley, ResearchGate or Academia.edu) after";X2));
+					ESTNUM(CHERCHE("Post-print in Institutional repositories or Central repositories after <num>";X2));
+					ESTNUM(CHERCHE("Post-print on institutional repositories or central repositories after<num>";X2));
+					ESTNUM(CHERCHE("Author's post-print on open access repository after an embargo period of";X2));
+					ESTNUM(CHERCHE("Author's post-print on institutional repository, subject repository, academic social media (Research Gate, Mendeley, Academia.edu) after";X2));
+					ESTNUM(CHERCHE("On an institutional repository or open access repository after <num>";X2));
+					ESTNUM(CHERCHE("Post-print on institutional website, institutional repository, subject-based repository, PubMed Central, non-commercial scientific social network or third party eprint servers after <num>";X2));
+					ESTNUM(CHERCHE("Author's post-print on departmental website, institutional repository, non-commercial subject-based repositories, such as PubMed Central, Europe PMC or arXiv, after a <num>";X2));
+					ESTNUM(CHERCHE("Author's post-print on any open access repository after <num>";X2))
+				);
+				
+				// Récupérer les chiffres (mois d'embargo) après <num> (sachant qu'il n'y a pas toujours <num>)
+				SIERREUR(STXT(X2;CHERCHE("<num>6";X2;1)+5;1);STXT(X2;CHERCHE("<num>";X2;1)+5;2));
+				
+				
+				// Sinon, si l'embargo est indiqué à 2 ans
+				SI(
+					ESTNUM(CHERCHE("Post-print on institutional repositories or central repositories after 2 years embargo";X2));
+					"2 ans";
+					
+					// Sinon, si l'embargo est indiqué à 12 mois
+					SI(
+						OU(
+							ESTNUM(CHERCHE("Closed access of any version if permitted in an institutional repository after a 12 month embargo";X2));
+							ESTNUM(CHERCHE("Post-print on open access repositories after 12 month embargo";X2))
+						);
+						"12 mois";
+						
+						// Sinon, si on n'a rien trouvé mais que "postprint" est écrit dans le texte on signale pour vérification manuelle
+						// Sinon on considère que c'est bon
+						SI(
+							OU(
+								ESTNUM(CHERCHE("Post-print";X2));
+								ESTNUM(CHERCHE("postprint";X2))
+							);
+							"à vérifier car postprint écrit dans le texte";
+							"ok"
+						)
+					)
+				)
+			)
+		)
+	)
+)

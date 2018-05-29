@@ -20,9 +20,9 @@ Faites glisser le cadre jusqu'au dernier ISSN de la liste.
 ## Pour compléter la recherche des conditions d'embargo de postprint
 L'API SHERPA-RoMEO renvoie un résultat au format XML (colonne H)
 
-Le résultat contient une balise `<postarchiving>` pour le dépôt du postprint, qui peut contenir les valeurs can, cannot, restricted, unknown etc. Par exemple : `<postarchiving>`can`</postarchiving>`.
+Le résultat contient une balise `<postarchiving>` pour le dépôt du postprint, qui peut contenir les valeurs can, cannot, restricted, unknown etc. Par exemple : `<postarchiving>can</postarchiving>`.
 
-Le résultat contient également un ensemble de balises `<condition>` parmi lesquelles une concerne la durée d'embargo du postprint, par exemple : `<condition>`Author's post-print after 12 months after publication`</condition>`. Ces conditions sont extraites dans les colonnes J:W et leur texte concaténé en colonne X.
+Le résultat contient également un ensemble de balises `<condition>` parmi lesquelles une concerne la durée d'embargo du postprint, par exemple : `<condition>Author's post-print after 12 months after publication</condition>`. Ces conditions sont extraites dans les colonnes J:W et leur texte concaténé en colonne X.
 
 Une fonction analyse ces métadonnées au format XML pour afficher un bilan des conditions de  dépôt de postprints (colonne B) :
 - On écarte les postprints interdits
